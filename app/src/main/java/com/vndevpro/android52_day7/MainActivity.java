@@ -1,7 +1,6 @@
 package com.vndevpro.android52_day7;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -40,7 +39,37 @@ public class MainActivity extends AppCompatActivity {
         rvDemo.setAdapter(mProductAdapter);
     }
 
-    private IItemClickListener clickListener = pos -> Log.d(TAG, "onItemClick: " + pos);
+    private IItemClickListener clickListener = new IItemClickListener() {
+        @Override
+        public void onItemClick(int pos) {
+
+        }
+
+        @Override
+        public void onChangeWishList(int position) {
+            ProductModel productModel = mListProduct.get(position);
+            productModel.setWish(!productModel.isWish());
+            mListProduct.set(position, productModel);
+//            mProductAdapter.notifyDataSetChanged();
+            mProductAdapter.notifyItemChanged(position);
+        }
+
+        @Override
+        public void onDelete(int position) {
+            mListProduct.remove(position);
+//            mProductAdapter.notifyDataSetChanged();
+            mProductAdapter.notifyItemRemoved(position);
+
+        }
+
+        @Override
+        public void onUpdate(int position) {
+            ProductModel productModel = mListProduct.get(position);
+            productModel.setProductName(productModel.getProductName() + " new");
+            mListProduct.set(position, productModel);
+            mProductAdapter.notifyDataSetChanged();
+        }
+    };
 
     private void initData() {
         mListProduct = new ArrayList<>();

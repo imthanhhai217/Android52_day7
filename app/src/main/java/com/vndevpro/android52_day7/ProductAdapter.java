@@ -42,12 +42,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder: "+position);
+        Log.d(TAG, "onBindViewHolder: " + position);
         ProductModel productModel = mListData.get(position);
 
         holder.tvProductName.setText(productModel.getProductName());
         holder.tvPrices.setText(productModel.getProductPrices());
         holder.tvRating.setText(productModel.getRate());
+
+        if (productModel.isWish()){
+            Glide.with(mContext).load(R.drawable.in_wishlist).into(holder.imgWishlist);
+        }else {
+            Glide.with(mContext).load(R.drawable.wish).into(holder.imgWishlist);
+        }
 
         Glide.with(mContext).load(productModel.getProductImage()).into(holder.imgProduct);
 //        holder.llProductItemMain.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +69,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return mListData != null ? mListData.size() : 0;
     }
 
-    public class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvProductName, tvPrices, tvRating;
         ImageView imgProduct, imgWishlist, imgRemove;
@@ -81,16 +87,29 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             llProductItemMain = itemView.findViewById(R.id.llProductItemMain);
 
             llProductItemMain.setOnClickListener(this);
+            imgRemove.setOnClickListener(this);
+            imgWishlist.setOnClickListener(this);
+            tvProductName.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.llProductItemMain:
                     int position = getAdapterPosition();
-                    if (mCallback != null){
+                    if (mCallback != null) {
                         mCallback.onItemClick(position);
                     }
+                    break;
+
+                case R.id.imgRemove:
+                    mCallback.onDelete(getAdapterPosition());
+                    break;
+                case R.id.imgWishlist:
+                    mCallback.onChangeWishList(getAdapterPosition());
+                    break;
+                case R.id.tvProductName:
+                    mCallback.onUpdate(getAdapterPosition());
                     break;
             }
         }
