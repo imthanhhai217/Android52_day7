@@ -19,11 +19,11 @@ import java.util.ArrayList;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private static final String TAG = "ProductAdapter";
-    private ArrayList<ProductModel> mListData;
+    private ArrayList<Product> mListData;
     private Context mContext;
     private IItemClickListener mCallback;
 
-    public ProductAdapter(ArrayList<ProductModel> listData) {
+    public ProductAdapter(ArrayList<Product> listData) {
         this.mListData = listData;
     }
 
@@ -43,19 +43,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: " + position);
-        ProductModel productModel = mListData.get(position);
+        Product productModel = mListData.get(position);
 
-        holder.tvProductName.setText(productModel.getProductName());
-        holder.tvPrices.setText(productModel.getProductPrices());
-        holder.tvRating.setText(productModel.getRate());
+        holder.tvProductName.setText(productModel.getTitle());
+        holder.tvPrices.setText(productModel.getPrice() + "");
+        holder.tvRating.setText(productModel.getRating() + "");
 
-        if (productModel.isWish()){
+        if (productModel.isWish()) {
             Glide.with(mContext).load(R.drawable.in_wishlist).into(holder.imgWishlist);
-        }else {
+        } else {
             Glide.with(mContext).load(R.drawable.wish).into(holder.imgWishlist);
         }
 
-        Glide.with(mContext).load(productModel.getProductImage()).into(holder.imgProduct);
+        Glide.with(mContext).load(productModel.getThumbnail()).into(holder.imgProduct);
 //        holder.llProductItemMain.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
