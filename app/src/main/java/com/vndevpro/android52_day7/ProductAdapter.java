@@ -69,6 +69,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return mListData != null ? mListData.size() : 0;
     }
 
+    public void update(ArrayList<Product> data) {
+        this.mListData = null;
+        this.mListData = new ArrayList<>();
+        this.mListData.addAll(data);
+        notifyDataSetChanged();
+    }
+
     public class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvProductName, tvPrices, tvRating;
